@@ -1,6 +1,6 @@
 
 
-# 🌳 TreeScope – Global Tree & Forest Data Explorer
+# 🌳 LeafLattice – Global Tree & Forest Data Explorer
 
 **TreeScope** is a lightweight, serverless web application that visualizes global tree and forest data on an interactive map. It leverages **AWS Free Tier** for the backend and **Cloudflare Pages** for the frontend, making it cost-effective and scalable.
 
