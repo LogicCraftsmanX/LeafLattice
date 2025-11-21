@@ -1,27 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>TreeScope Explorer</title>
-  <link rel="stylesheet" href="style.css">
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+  <!-- App styles -->
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>🌳 TreeScope Explorer</h1>
+    <div class="header-actions">
+      <input id="searchInput" placeholder="Search country or species (e.g. Brazil or oak)" />
+      <button id="searchBtn">Search</button>
+      <select id="modeSelect" title="Switch to mock mode for demo">
+        <option value="API">API Mode</option>
+        <option value="MOCK">Mock Mode</option>
+      </select>
+    </div>
   </header>
 
   <main>
-    <section id="map">
-      <!-- Map goes here -->
-      <p>Interactive map will be embedded here.</p>
-    </section>
+    <div id="map"></div>
 
-    <section id="info">
-      <input type="text" id="searchInput" placeholder="Search for country or species">
-      <button id="searchBtn">Search</button>
-      <div id="results"></div>
-    </section>
+    <aside id="sidebar">
+      <div id="info">
+        <h2>Hover over a country</h2>
+        <div id="summary">Hover to see quick stats. Click for more details.</div>
+      </div>
+
+      <div id="details" hidden>
+        <h3 id="details-name"></h3>
+        <pre id="details-content"></pre>
+      </div>
+
+      <div id="search-results" hidden>
+        <h3>Search results</h3>
+        <ul id="results-list"></ul>
+      </div>
+
+      <div id="legend">
+        <h4>Forest cover (est.)</h4>
+        <div class="legend-row"><span class="swatch" style="background:#00441b"></span> >50%</div>
+        <div class="legend-row"><span class="swatch" style="background:#2e8b57"></span> 20–50%</div>
+        <div class="legend-row"><span class="swatch" style="background:#98fb98"></span> <20%</div>
+      </div>
+
+      <footer class="sidebar-footer">Demo: uses GeoJSON + AWS Lambda API</footer>
+    </aside>
   </main>
 
   <script src="script.js"></script>
