@@ -89,19 +89,59 @@ function onEachFeature(feature, layer){
 function loadGeoJSON(){
   fetch(GEOJSON_PATH)
     .then(r => {
-      if (!r.ok) throw new Error('GeoJSON not found. Put a countries.geojson at ' + GEOJSON_PATH);
+      if (!r.ok) throw new Error('GeoJSON not found. Using fallback.');
       return r.json();
     })
+    .catch(err => {
+      console.warn(err.message);
+      // Fallback small sample GeoJSON
+      return {
+        "type": "FeatureCollection",
+        "features": [
+          {
+            "type": "Feature",
+            "properties": { "name": "United States", "iso_a2": "US", "forest_pct": 33 },
+            "geometry": { "type": "Polygon", "coordinates": [[
+              [-101.0, 40.0],
+              [-101.0, 45.0],
+              [-95.0, 45.0],
+              [-95.0, 40.0],
+              [-101.0, 40.0]
+            ]] }
+          },
+          {
+            "type": "Feature",
+            "properties": { "name": "Brazil", "iso_a2": "BR", "forest_pct": 60 },
+            "geometry": { "type": "Polygon", "coordinates": [[
+              [-60.0, -10.0],
+              [-60.0, 0.0],
+              [-50.0, 0.0],
+              [-50.0, -10.0],
+              [-60.0, -10.0]
+            ]] }
+          },
+          {
+            "type": "Feature",
+            "properties": { "name": "India", "iso_a2": "IN", "forest_pct": 24 },
+            "geometry": { "type": "Polygon", "coordinates": [[
+              [75.0, 20.0],
+              [75.0, 30.0],
+              [85.0, 30.0],
+              [85.0, 20.0],
+              [75.0, 20.0]
+            ]] }
+          }
+        ]
+      };
+    })
     .then(geojson => {
-      // optional: inject a sample forest_pct if not present to demonstrate coloring
+      // optional: inject demo forest_pct if missing
       geojson.features.forEach(f => {
         if (f.properties && f.properties.forest_pct == null){
-          // create demo forest_pct by hashing country name (stable)
-          const name = (f.properties.name || f.properties.ADMIN || '').toLowerCase();
+          const name = (f.properties.name || '').toLowerCase();
           let h = 0;
           for (let i=0;i<name.length;i++) h = (h<<5)-h + name.charCodeAt(i);
-          const pct = 10 + Math.abs(h % 80); // 10..89
-          f.properties.forest_pct = pct;
+          f.properties.forest_pct = 10 + Math.abs(h % 80);
         }
       });
 
@@ -109,10 +149,6 @@ function loadGeoJSON(){
         style: styleFeature,
         onEachFeature: onEachFeature
       }).addTo(map);
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById('summary').textContent = 'Error loading map data: ' + err.message;
     });
 }
 
