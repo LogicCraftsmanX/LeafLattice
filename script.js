@@ -2,7 +2,7 @@
 // CONFIG
 // -----------------------------
 const API_BASE = 'https://your-api.example.com'; // <-- replace with your API
-const GEOJSON_PATH = 'data/countries.json';
+const GEOJSON_PATH = 'data/countries.geojson';
 const DEFAULT_MODE = 'MOCK'; // set to 'API' or 'MOCK' initially
 
 // -----------------------------
